@@ -11,7 +11,7 @@ dependencies:
   barrel_annotation: ^1.0.0
 
 dev_dependencies:
-  barrel_generator: ^1.0.4
+  barrel_generator: ^1.0.5
   build_runner: ^2.4.13
   lints: ^4.0.0
   test: ^1.24.0

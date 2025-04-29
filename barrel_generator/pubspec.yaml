@@ -2,14 +2,14 @@ name: barrel_generator
 description: Generate barrel files for Dart using build_runner.
 repository: https://github.com/AngeloAvv/barrel
 issue_tracker: https://github.com/AngeloAvv/barrel/issues
-version: 1.0.4
+version: 1.0.5
 
 environment:
   sdk: ^3.0.0
 
 # Add regular dependencies here.
 dependencies:
-  analyzer: ^6.5.0
+  analyzer: ^7.0.0
   build: ^2.4.1
   source_gen: ^2.0.0
   barrel_annotation: ^1.0.0

@@ -1,3 +1,7 @@
+## 1.0.5
+
+- Bumped `analyzer` to `7.0.0`
+
 ## 1.0.4
 
 - Bumped `source_gen` to `2.0.0`
