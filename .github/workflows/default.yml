@@ -52,12 +52,26 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
         working-directory: example
 
+  format:
+    name: Format idempotency gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+
+      - name: Check formatting
+        run: dart format --set-exit-if-changed .
+
   ci-ok:
     name: ci-ok
     if: ${{ always() }}
     needs:
       - analyze
       - build
+      - format
     runs-on: ubuntu-latest
     steps:
       - name: Fail unless every required job succeeded
