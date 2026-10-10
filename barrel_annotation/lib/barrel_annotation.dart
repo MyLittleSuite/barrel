@@ -26,4 +26,3 @@
 library;
 
 export 'src/barrel_config.dart';
-

@@ -32,10 +32,7 @@ class BarrelWriterProcessor extends Processor<void> {
   final String path;
   final String data;
 
-  const BarrelWriterProcessor({
-    required this.path,
-    required this.data,
-  });
+  const BarrelWriterProcessor({required this.path, required this.data});
 
   @override
   void process() {

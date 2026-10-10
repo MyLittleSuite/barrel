@@ -1,0 +1,79 @@
+name: Pipeline
+
+on: push
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze ${{ matrix.working-directory }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        working-directory:
+          - barrel_annotation
+          - barrel_generator
+          - example
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+
+      - name: Get dependencies
+        run: dart pub get
+        working-directory: ${{ matrix.working-directory }}
+
+      - name: Analyze
+        run: dart analyze
+        working-directory: ${{ matrix.working-directory }}
+
+  # Smoke test of the generator on a real consumer. The generated barrel files
+  # are intentionally NOT diffed: the generator currently emits files in
+  # filesystem order, so the output is not deterministic across runs.
+  build:
+    name: Build example
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+
+      - name: Get dependencies
+        run: dart pub get
+        working-directory: example
+
+      - name: Run build_runner
+        run: dart run build_runner build --delete-conflicting-outputs
+        working-directory: example
+
+  format:
+    name: Format idempotency gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+
+      - name: Check formatting
+        run: dart format --set-exit-if-changed .
+
+  ci-ok:
+    name: ci-ok
+    if: ${{ always() }}
+    needs:
+      - analyze
+      - build
+      - format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail unless every required job succeeded
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped') }}
+        run: exit 1

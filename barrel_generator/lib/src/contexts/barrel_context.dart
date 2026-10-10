@@ -33,9 +33,7 @@ class BarrelContext extends Context {
   const BarrelContext._(this._exclusions);
 
   factory BarrelContext({required List<String> exclusions}) {
-    return BarrelContext._(
-      exclusions.map((e) => Glob(e)).toList(),
-    );
+    return BarrelContext._(exclusions.map((e) => Glob(e)).toList());
   }
 
   bool excluded(String path) => _exclusions.any((glob) => glob.matches(path));

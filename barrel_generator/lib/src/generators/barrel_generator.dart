@@ -41,8 +41,10 @@ class BarrelGenerator extends Generator {
   @override
   FutureOr<String?> generate(LibraryReader library, BuildStep buildStep) {
     final barrelConfigAnnotation = library
-        .annotatedWith(TypeChecker.fromRuntime(BarrelConfig),
-            throwOnUnresolved: false)
+        .annotatedWith(
+          TypeChecker.fromRuntime(BarrelConfig),
+          throwOnUnresolved: false,
+        )
         .firstOrNull;
 
     if (barrelConfigAnnotation == null) {
@@ -50,7 +52,10 @@ class BarrelGenerator extends Generator {
     }
 
     final strRootFolder = _rootFolder;
-    final context = _getContext(barrelConfigAnnotation.annotation, strRootFolder);
+    final context = _getContext(
+      barrelConfigAnnotation.annotation,
+      strRootFolder,
+    );
 
     _generate(library.element.source.fullName, context);
 
@@ -66,13 +71,15 @@ class BarrelGenerator extends Generator {
   }
 
   void _exploreFolder(Directory folder, BarrelContext context) {
-    final folderContext =
-        BarrelFolderProcessor(folder, context: context).process();
-    
+    final folderContext = BarrelFolderProcessor(
+      folder,
+      context: context,
+    ).process();
+
     final data = BarrelOutputProcessor(folderContext).process();
     final folderName = folder.path.split(Platform.pathSeparator).last;
     final barrelPath = '${folder.path}$pathSeparator$folderName.barrel.dart';
-    
+
     if (!context.excluded(barrelPath) && folderContext.isNotEmpty) {
       BarrelWriterProcessor(path: barrelPath, data: data).process();
     }
@@ -90,8 +97,9 @@ class BarrelGenerator extends Generator {
     final projectDirectory = Directory.current.path;
 
     final filePieces = fullName.split(pathSeparator);
-    final fileDirectory =
-    filePieces.sublist(2, filePieces.length - 1).join(pathSeparator);
+    final fileDirectory = filePieces
+        .sublist(2, filePieces.length - 1)
+        .join(pathSeparator);
 
     return '$projectDirectory$pathSeparator$fileDirectory';
   }
@@ -100,9 +108,7 @@ class BarrelGenerator extends Generator {
     final paths = annotation
         .read('exclude')
         .listValue
-        .map(
-          (exclusion) => '$rootFolder/${exclusion.toStringValue()}',
-        )
+        .map((exclusion) => '$rootFolder/${exclusion.toStringValue()}')
         .toList(growable: false);
 
     return BarrelContext(exclusions: paths);
