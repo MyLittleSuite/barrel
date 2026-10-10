@@ -53,8 +53,10 @@ class BarrelFolderProcessor extends Processor<BarrelFolderContext> {
         Glob('${folder.path}/**.dart').listSync().isNotEmpty;
     barrelConditions(file) => !context.excluded(file.path);
 
-    final folders =
-        items.where(folderConditions).cast<Directory>().toList(growable: false);
+    final folders = items
+        .where(folderConditions)
+        .cast<Directory>()
+        .toList(growable: false);
     final barrels = folders
         .map((folder) {
           final folderName = folder.path.split(pathSeparator).last;
@@ -73,10 +75,13 @@ class BarrelFolderProcessor extends Processor<BarrelFolderContext> {
         })
         .toList(growable: false);
 
-    final files = items.where(fileConditions).map((file) {
-      final fileName = file.path.split(pathSeparator).last;
-      return "export '$fileName';";
-    }).toList(growable: false);
+    final files = items
+        .where(fileConditions)
+        .map((file) {
+          final fileName = file.path.split(pathSeparator).last;
+          return "export '$fileName';";
+        })
+        .toList(growable: false);
 
     return BarrelFolderContext(
       folders: folders,

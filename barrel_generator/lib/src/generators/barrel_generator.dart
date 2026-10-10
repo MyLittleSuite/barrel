@@ -97,8 +97,9 @@ class BarrelGenerator extends Generator {
     final projectDirectory = Directory.current.path;
 
     final filePieces = fullName.split(pathSeparator);
-    final fileDirectory =
-        filePieces.sublist(2, filePieces.length - 1).join(pathSeparator);
+    final fileDirectory = filePieces
+        .sublist(2, filePieces.length - 1)
+        .join(pathSeparator);
 
     return '$projectDirectory$pathSeparator$fileDirectory';
   }
