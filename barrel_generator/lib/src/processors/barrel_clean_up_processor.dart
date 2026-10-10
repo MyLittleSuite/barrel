@@ -36,5 +36,4 @@ class BarrelCleanUpProcessor extends Processor<void> {
       file.deleteSync();
     }
   }
-  
 }

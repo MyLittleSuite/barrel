@@ -37,10 +37,7 @@ class BarrelFolderProcessor extends Processor<BarrelFolderContext> {
   final Directory folder;
   final BarrelContext context;
 
-  const BarrelFolderProcessor(
-    this.folder, {
-    required this.context,
-  });
+  const BarrelFolderProcessor(this.folder, {required this.context});
 
   @override
   BarrelFolderContext process() {
@@ -52,7 +49,8 @@ class BarrelFolderProcessor extends Processor<BarrelFolderContext> {
         !file.path.endsWith('.barrel.dart') &&
         !context.excluded(file.path);
     folderConditions(folder) =>
-        folder is Directory && Glob('${folder.path}/**.dart').listSync().isNotEmpty;
+        folder is Directory &&
+        Glob('${folder.path}/**.dart').listSync().isNotEmpty;
     barrelConditions(file) => !context.excluded(file.path);
 
     final folders =

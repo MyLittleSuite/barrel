@@ -28,7 +28,5 @@ import 'package:source_gen/source_gen.dart';
 import 'package:barrel_generator/barrel_generator.dart';
 
 /// Entry point for the barrel generator
-Builder barrel(BuilderOptions options) => LibraryBuilder(
-      BarrelGenerator(),
-      generatedExtension: '.barrel.dart',
-    );
+Builder barrel(BuilderOptions options) =>
+    LibraryBuilder(BarrelGenerator(), generatedExtension: '.barrel.dart');
